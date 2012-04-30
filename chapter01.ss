@@ -16,8 +16,23 @@
 ; get the tail of the list
 (cdr listocrap)
 
+; nested list
+(define s '(a b (c)))
 
+; empty list
+(define l ())
 
+; an atom
+(define x 'hi)
 
+(cons s l)
+(cons l s)
 
+; this isn't supposed to be possible (consing onto an atom), but it works
+(cons s x)
 
+; playing with null?
+(null? ())
+(null? 'monkey)
+
+(null? '())
