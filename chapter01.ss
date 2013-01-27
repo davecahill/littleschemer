@@ -8,13 +8,13 @@
 (atom? '(monkey business))
 
 ; make a list of atoms to play with later
-(define listocrap '(monkey banana haha))
+(define listostuff '(apple banana orange))
 
 ; get the head of the list
-(car listocrap)
+(car listostuff)
 
 ; get the tail of the list
-(cdr listocrap)
+(cdr listostuff)
 
 ; nested list
 (define s '(a b (c)))
