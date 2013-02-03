@@ -91,23 +91,82 @@
 			((zero? pow) 1)
 			(else (* n (power n (sub1 pow)))))))
 
+; Imagine sharing n items equally among m people, and only being able
+; to give them whole items. Once you got low enough that n < m,
+; no one would get any more items. Before that however, you'd keep taking
+; m items from your stack of one, giving one to each person, and marking 
+; a +1 on your "#items each person got" figure.
+(define quotient
+	(lambda (n m)
+		(cond
+			((special< n m) 0)
+			(else (add1 (quotient (specialminus n m) m)))
+			)))
 
+(define d_length
+	(lambda (lat)
+		(cond
+			((null? lat) 0)
+			(else (add1 (d_length (cdr lat)))))))
 
+; how do you give no answer?
+; maybe just assume that the lat is long enough
+; (that seems a common pattern so far)
+(define pick
+	(lambda (n lat)
+		(cond 
+			((zero? (sub1 n)) (car lat))
+			(else (pick (sub1 n) (cdr lat))))))
 
+(define rempick
+	(lambda (n lat)
+		(cond 
+			((zero? (sub1 n)) (cdr lat))
+			(else (cons (car lat) (rempick (sub1 n) (cdr lat)))))))
 
+; prune numbers from a lat
+(define no-nums
+	(lambda (lat)
+		(cond 
+			((null? lat) '())
+			((number? (car lat)) (no-nums (cdr lat)))
+			(else (cons (car lat) (no-nums (cdr lat)))))))
 
+; get only numbers from a lat
+(define all-nums
+	(lambda (lat)
+		(cond 
+			((null? lat) '())
+			((number? (car lat)) (cons (car lat) (all-nums (cdr lat))))
+			(else (all-nums (cdr lat))))))
 
+;eqan?
+(define eqan?
+	(lambda (a b)
+		(cond
+			((and (number? a) (number? b)) (= a b))
+			((and (atom? a) (atom? b)) (eq? a b))
+			(else #f))))
 
+; occur - count #times an element occurs in lat
+(define occur
+	(lambda (n lat)
+		(cond
+			((null? lat) 0)
+			((eqan? n (car lat)) (add1 (occur n (cdr lat))))
+			(else (occur n (cdr lat))))))
 
+; one? n -> true if #1, false otherwise
+(define one?
+	(lambda (n) 
+		(= n 1)))
 
-
-
-
-
-
-
-
-
+; reqrite rempick using one?
+(define rempick2
+	(lambda (n lat)
+		(cond 
+			((one? n) (cdr lat))
+			(else (cons (car lat) (rempick2 (sub1 n) (cdr lat)))))))
 
 
 
