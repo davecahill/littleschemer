@@ -161,7 +161,7 @@
 	(lambda (n) 
 		(= n 1)))
 
-; reqrite rempick using one?
+; rewrite rempick using one?
 (define rempick2
 	(lambda (n lat)
 		(cond 
