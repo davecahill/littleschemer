@@ -1,5 +1,7 @@
 (load "chapter01.ss")
 
+; Chapter 2 - Do It, Do It Again, and Again, and Again...
+
 ; lat?
 (define lat?
 	(lambda (l)
@@ -14,7 +16,7 @@
 	(lambda (a lat)
 		(cond
 			((null? lat) #f)
-			(else (or (eq? (car lat) a) 
+			(else (or (eq? (car lat) a)
 				(member? a (cdr lat)))))))
 
 

@@ -1,5 +1,6 @@
 (load "chapter02.ss")
 
+; Chapter 3 - Cons The Magnificent
 
 ; rember
 ; should remove only first occurrence of a
