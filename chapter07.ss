@@ -102,39 +102,21 @@
 			(else (and (member? a (car l-set))
 				(memberall? a (cdr l-set)))))))
 
-(define first-set
-	(lambda (l-set)
-		(car l-set)))
-
-(define other-sets
-	(lambda (l-set)
-		(cdr l-set)))
-
-
-(define first-item-first-set
-	(lambda (l-set)
-		(car (first-set l-set))))
-
-(define remainder-first-set
-	(lambda (l-set)
-		(cdr (first-set l-set))))
-
 ; intersectall - return items which are in all of the sets
 ; assume l-set consists of at least 2 sets
 ; (list representation of set)
+(define intersectall-rec
+	(lambda (set1 l-set)
+		(cond
+			((null? set1) '())
+			((memberall? (car set1) l-set)
+				(cons (car set1) (intersectall-rec (cdr set1) l-set)))
+			(else (intersectall-rec (cdr set1) l-set)))))
+
 (define intersectall
 	(lambda (l-set)
-		(cond
-			((null? (first-set l-set)) '())
-			((memberall? (first-item-first-set l-set)
-				(other-sets l-set))
-			(cons (first-item-first-set l-set)
-					(intersectall
-						(cons (remainder-first-set l-set)
-							(other-sets l-set)))))
-			(else (intersectall
-						(cons (remainder-first-set l-set)
-							(other-sets l-set)))))))
+		(intersectall-rec (car l-set) (cdr l-set))))
+
 
 
 
