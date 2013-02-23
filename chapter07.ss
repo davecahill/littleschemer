@@ -1,4 +1,4 @@
-(load "chapter05.ss")
+(load "chapter06.ss")
 
 ; Chapter 7 - Friends and Relations
 
@@ -194,29 +194,3 @@
 (define one-to-one?
 	(lambda (fun)
 		(fun? (revrel fun))))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

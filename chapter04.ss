@@ -167,9 +167,3 @@
 		(cond
 			((one? n) (cdr lat))
 			(else (cons (car lat) (rempick2 (sub1 n) (cdr lat)))))))
-
-
-
-
-
-

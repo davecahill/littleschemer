@@ -142,22 +142,3 @@
 				(applyfn specialmult nexp))
 			(else
 				(applyfn power nexp)))))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
