@@ -201,39 +201,72 @@
 (define multiinsertLR&co
 	(lambda (new oldL oldR lat col)
 		(cond
-			((null? lat) (col '() 0 0)
+			((null? lat) (col '() 0 0))
 			((eq? (car lat) oldL)
 				(multiinsertLR&co new oldL oldR (cdr lat)
-					(lambda (newlat left-count right-count)
+					(lambda (newlat left-insertions right-insertions)
 						(col (cons new (cons oldL newlat))
 							(add1 left-insertions) right-insertions))))
 			((eq? (car lat) oldR)
 				(multiinsertLR&co new oldL oldR (cdr lat)
-					(lambda (newlat left-count right-count)
-						(col (cons oldR (cons new newlat)
-							left-insertions (add1 right-insertions))))))
+					(lambda (newlat left-insertions right-insertions)
+						(col (cons oldR (cons new newlat))
+							left-insertions (add1 right-insertions)))))
 			(else (multiinsertLR&co new oldL oldR (cdr lat)
-					(lambda (newlat left-count right-count)
-						(col (cons (cdr lat) newlat) left-insertions right-insertions))))))))
+					(lambda (newlat left-insertions right-insertions)
+						(col (cons (car lat) newlat) left-insertions right-insertions)))))))
 
-; maybe the outer col could cons the three args together?
+; sample col:
+; (define col (lambda (newlat lefties righties) (cons newlat (cons lefties righties))))
 
+; commenting because already defined in Scheme
+; (define even?
+; 	(lambda (n)
+; 		(= (* (/ n 2) 2) n)))
 
+; evens-only*, removes all odd numbers from a list of nested lists.
+(define evens-only*
+	(lambda (l)
+		(cond
+			((null? l) '())
+			((atom? (car l))
+				(cond
+					((even? (car l)) (cons (car l) (evens-only* (cdr l))))
+					(else (evens-only* (cdr l)))))
+			(else
+				(cons (evens-only* (car l)) (evens-only* (cdr l)))))))
 
+; evens-only*&co
+; builds a nested list of even numbers by removing odd ones from argument
+; multiplies even numbers
+; sums odd numbers
+(define evens-only*&co
+	(lambda (l col)
+		(cond
+			((null? l) (col '() 1 0))
+			((atom? (car l))
+				(cond
+					((even? (car l))
+						(evens-only*&co (cdr l)
+							(lambda (evens multiplied-evens summed-odds)
+								(col (cons (car l) evens) (* (car l) multiplied-evens) summed-odds))))
+					(else (evens-only*&co (cdr l)
+						(lambda (evens multiplied-evens summed-odds)
+								(col evens multiplied-evens (+ (car l) summed-odds)))))))
+			(else
+				(evens-only*&co (car l)
+					(lambda (evens-head multiplied-evens-head summed-odds-head)
+						(evens-only*&co (cdr l)
+							(lambda (evens-tail multiplied-evens-tail summed-odds-tail)
+								(col (cons evens-head evens-tail) (* multiplied-evens-head multiplied-evens-tail)
+									(+ summed-odds-head summed-odds-tail))))))))))
 
+; the end of the above (else case) is pretty magic!
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+; simple col for three items
+(define printthree
+	(lambda (a b c)
+		(define res
+			(cons a (cons b (cons c '()))))
+		(pp res)
+		res))
